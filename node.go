@@ -16,6 +16,7 @@ var NodeIDEncoding *base64.Encoding = base64.RawURLEncoding
 type NodeDefinitions struct {
 	NodeInterface *graphql.Interface
 	NodeField     *graphql.Field
+	NodesField    *graphql.Field
 }
 
 type NodeDefinitionsConfig struct {
@@ -69,9 +70,39 @@ func NewNodeDefinitions(config NodeDefinitionsConfig) *NodeDefinitions {
 			return config.IDFetcher(id, p.Info, p.Context)
 		},
 	}
+
+	nodesField := &graphql.Field{
+		Name:        "Nodes",
+		Description: "Lookup nodes by a list of IDs.",
+		Type:        graphql.NewNonNull(graphql.NewList(nodeInterface)),
+		Args: graphql.FieldConfigArgument{
+			"ids": &graphql.ArgumentConfig{
+				Type:        graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.ID))),
+				Description: "The list of node IDs.",
+			},
+		},
+		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			if config.IDFetcher == nil {
+				return nil, nil
+			}
+			var nodes []interface{}
+			ifaces := p.Args["ids"].([]interface{})
+			for _, iface := range ifaces {
+				id := iface.(string)
+				node, err := config.IDFetcher(id, p.Info, p.Context)
+				if err != nil {
+					return nil, err
+				}
+				nodes = append(nodes, node)
+			}
+			return nodes, nil
+		},
+	}
+
 	return &NodeDefinitions{
 		NodeInterface: nodeInterface,
 		NodeField:     nodeField,
+		NodesField:    nodesField,
 	}
 }
 
