@@ -35,7 +35,7 @@ func TestMutation_CorrectlyMutatesTheDataSet(t *testing.T) {
 		Data: map[string]interface{}{
 			"introduceShip": map[string]interface{}{
 				"ship": map[string]interface{}{
-					"id":   "U2hpcDoxMA==",
+					"id":   "U2hpcDoxMA",
 					"name": "B-Wing",
 				},
 				"faction": map[string]interface{}{

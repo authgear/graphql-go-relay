@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+// NodeIDEncoding is Base64 URL encoding without padding.
+// It is better than standard encoding because it can be use in URL without percent encoding.
+var NodeIDEncoding *base64.Encoding = base64.RawURLEncoding
+
 type NodeDefinitions struct {
 	NodeInterface *graphql.Interface
 	NodeField     *graphql.Field
@@ -82,7 +86,7 @@ Takes a type name and an ID specific to that type name, and returns a
 */
 func ToGlobalID(ttype string, id string) string {
 	str := ttype + ":" + id
-	encStr := base64.StdEncoding.EncodeToString([]byte(str))
+	encStr := NodeIDEncoding.EncodeToString([]byte(str))
 	return encStr
 }
 
@@ -92,7 +96,7 @@ used to create it.
 */
 func FromGlobalID(globalID string) *ResolvedGlobalID {
 	strID := ""
-	b, err := base64.StdEncoding.DecodeString(globalID)
+	b, err := NodeIDEncoding.DecodeString(globalID)
 	if err == nil {
 		strID = string(b)
 	}

@@ -130,10 +130,10 @@ func TestGlobalIDFields_GivesDifferentIDs(t *testing.T) {
 					"id": "VXNlcjoy",
 				},
 				map[string]interface{}{
-					"id": "UGhvdG86MQ==",
+					"id": "UGhvdG86MQ",
 				},
 				map[string]interface{}{
-					"id": "UGhvdG86Mg==",
+					"id": "UGhvdG86Mg",
 				},
 			},
 		},
@@ -155,7 +155,7 @@ func TestGlobalIDFields_RefetchesTheIDs(t *testing.T) {
           name
         }
       },
-      photo: node(id: "UGhvdG86MQ==") {
+      photo: node(id: "UGhvdG86MQ") {
         id
         ... on Photo {
           width
@@ -169,7 +169,7 @@ func TestGlobalIDFields_RefetchesTheIDs(t *testing.T) {
 				"name": "John Doe",
 			},
 			"photo": map[string]interface{}{
-				"id":    "UGhvdG86MQ==",
+				"id":    "UGhvdG86MQ",
 				"width": 300,
 			},
 		},
