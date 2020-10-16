@@ -1,9 +1,9 @@
 package relay_test
 
 import (
+	"github.com/authgear/graphql-go-relay"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/graphql/testutil"
-	"github.com/graphql-go/relay"
 	"reflect"
 	"testing"
 )
